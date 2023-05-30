@@ -37,6 +37,7 @@ header {
   background-color: #fff;
   text-align: center;
   padding: 10px;
+  border-radius: 10px;
 }
 .productContainer.list .product {
   background-color: #fff;

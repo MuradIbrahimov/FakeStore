@@ -9,6 +9,8 @@ function App() {
   const [basket, setBasket] = useState(temp ? JSON.parse(temp) : []);
   const [loading, setLoading] = useState(true);
   const [grid, setGrid] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+
   const total = basket
     .reduce(
       (acc, item) =>
@@ -54,21 +56,19 @@ function App() {
     setBasket(temp);
   };
 
-  // const [searchValue, setSearchValue] = useState("");
-  // console.log(searchValue);
-
-  // let [filteredProducts, setFilteredProducts] = products.filter((a) =>
-  //   a.title.includes(search.current?.value)
-  // );
+  const filteredProducts = products.filter((a) =>
+    a.title.toLowerCase().includes(searchValue.toLowerCase())
+  );
   return (
     <>
       <Header totalMoney={totalMoney} totalSpend={total} />
       <div className="stylingBtn">
         <input
-          onClick={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => setSearchValue(e.target.value)}
           type="text"
           className="search"
           placeholder="Search..."
+          value={searchValue}
         />
         <button onClick={() => setGrid(!grid)} className="gridButton">
           {grid ? "List" : "Grid"}
@@ -78,7 +78,7 @@ function App() {
         {loading ? (
           <h1>Yuklenir</h1>
         ) : (
-          products.map((a) => (
+          filteredProducts.map((a) => (
             <Product
               basket={basket}
               key={a.id}
