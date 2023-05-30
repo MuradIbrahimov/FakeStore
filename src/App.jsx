@@ -1,27 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "./Components/Header";
 import Product from "./Components/Product";
 import Receipt from "./Components/Receipt";
 function App() {
   const totalMoney = 12000;
   const [products, Setproducts] = useState([]);
-  const [basket, setBasket] = useState([]);
+  let temp = localStorage.getItem("basket");
+  const [basket, setBasket] = useState(temp ? JSON.parse(temp) : []);
   const [loading, setLoading] = useState(true);
+  const [grid, setGrid] = useState(true);
   const total = basket
     .reduce(
       (acc, item) =>
-        acc + products.find((a) => a.id === item.id).price * item.count,
+        acc + products.find((a) => a.id === item.id)?.price * item.count,
       0
     )
     .toFixed(2);
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products?limit=2")
+    fetch("https://fakestoreapi.com/products")
       .then((a) => a.json())
       .then((a) => {
         Setproducts([...a]);
         setLoading(false);
       });
   }, []);
+  useEffect(() => {
+    localStorage.setItem("basket", JSON.stringify(basket));
+  }, [basket]);
 
   const buyItem = (id) => {
     let check = basket.find((a) => a.id === id);
@@ -36,6 +41,7 @@ function App() {
   };
   const sellItem = (id) => {
     let check = basket.find((a) => a.id === id);
+    console.log(check);
     if (check === 0) {
       return;
     }
@@ -48,10 +54,27 @@ function App() {
     setBasket(temp);
   };
 
+  // const [searchValue, setSearchValue] = useState("");
+  // console.log(searchValue);
+
+  // let [filteredProducts, setFilteredProducts] = products.filter((a) =>
+  //   a.title.includes(search.current?.value)
+  // );
   return (
     <>
       <Header totalMoney={totalMoney} totalSpend={total} />
-      <section className="productContainer">
+      <div className="stylingBtn">
+        <input
+          onClick={(e) => setSearchValue(e.target.value)}
+          type="text"
+          className="search"
+          placeholder="Search..."
+        />
+        <button onClick={() => setGrid(!grid)} className="gridButton">
+          {grid ? "List" : "Grid"}
+        </button>
+      </div>
+      <section className={`productContainer ${grid ? "grid" : "list"}`}>
         {loading ? (
           <h1>Yuklenir</h1>
         ) : (
@@ -63,11 +86,12 @@ function App() {
               data={a}
               buyFunction={buyItem}
               sellFunction={sellItem}
+              total={totalMoney - total}
             />
           ))
         )}
       </section>
-      <Receipt data={products} basket={basket} money={totalMoney - total} />
+      <Receipt data={products} basket={basket} money={total} />
     </>
   );
 }

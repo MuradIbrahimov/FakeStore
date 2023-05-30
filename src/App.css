@@ -22,16 +22,32 @@ header {
   width: 1200px;
   max-width: 95%;
   margin: 10px auto;
+}
+.productContainer.grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-.product {
+.productContainer.list > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.productContainer.grid .product {
   background-color: #fff;
   text-align: center;
   padding: 10px;
-  border-radius: 10px;
 }
+.productContainer.list .product {
+  background-color: #fff;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid black;
+}
+.productContainer.list .product__image {
+  width: 250px;
+}
+
 .product:hover {
   opacity: 0.9;
   background-color: #fff;
@@ -69,10 +85,37 @@ header {
   color: #fff;
 }
 .receipt {
-    display: flex;
-    flex-direction: column;
-    min-height: 20vh;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 20vh;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.receipt {
+  background-color: #fff;
+  width: 600px;
+  margin: 10px auto;
+}
+.receipt h2 {
+  margin-top: 10px;
+}
+.stylingBtn {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.gridButton {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid;
+  margin: 10px 10px;
+  text-align: end;
+}
+.search {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid;
+  margin: 10px 10px;
+  text-align: start;
 }

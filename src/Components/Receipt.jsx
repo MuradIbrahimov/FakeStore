@@ -1,11 +1,17 @@
 function Receipt({ data, basket, money }) {
-  let check = basket.find((a) => a.id === data.id);
-
   return (
     <>
       <div className="receipt">
         <h1>Receipt</h1>
-        {check ? data.map((a) => <p>{a.title}</p>) : null}
+        {basket.map((a) => {
+          let product = data.find((b) => b.id === a.id);
+          return (
+            <p>{`${product?.title} || * ${a.count} -------- ${
+              product?.price * a.count
+            }`}</p>
+          );
+        })}
+        <h2>{`Total : ${money}`}</h2>
       </div>
     </>
   );
